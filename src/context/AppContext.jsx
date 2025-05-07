@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { dummyCourses } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import humanizeDuration from "humanize-duration";
 
 export const AppContext = createContext()
 
@@ -17,15 +18,43 @@ export const AppContextProvider = (props) => {
     }
 
     //function to calculate average ratiing of a course
-    const calculateRating =(course)=>{
-        if(course.courseRatings.length === 0){
+    const calculateRating = (course) => {
+        if (course.courseRatings.length === 0) {
             return 0
         }
-        let TotalRating =0
+        let TotalRating = 0
         course.courseRatings.forEach(rating => {
-            TotalRating +=rating.rating
+            TotalRating += rating.rating
         });
-        return TotalRating /course.courseRatings.length
+        return TotalRating / course.courseRatings.length
+    }
+
+    //Functioon to calculate course chapter time
+    const CalculateChapterTime = (chapter) => {
+        let time = 0
+        chapter.chapterContent.map((lecture) => time += lecture.lectureDuration)
+        return humanizeDuration(time * 60 * 1000, { units: ['h', 'm'] })
+    }
+
+    //Function to Calculate Course Duraton
+    const calculateCourseDuration = (course) => {
+        let time = 0
+
+        course.courseContent.map((chapter) => chapter.chapterContent.map(
+            (lecture) => time += lecture.lectureDuration
+        ))
+        return humanizeDuration(time * 60 * 1000, { units: ['h', 'm'] })
+    }
+
+    //function to calculate to no   of lectures in the course
+    const CalculateNoOfLectures = (course) => {
+        let totalLectures = 0;
+        course.courseContent.forEach(chapter => {
+            if (Array.isArray(chapter.chapterContent)) {
+                totalLectures += chapter.chapterContent.length
+            }
+        })
+        return totalLectures;
     }
 
     useEffect(() => {
@@ -33,8 +62,8 @@ export const AppContextProvider = (props) => {
     }, [])
 
     const value = {
-        currency, allCourses, navigate , calculateRating , isEduactor, setIsEduactor
-    }
+        currency, allCourses, navigate, calculateRating, isEduactor, setIsEduactor ,CalculateChapterTime , calculateCourseDuration , CalculateNoOfLectures
+        }
 
 
     return (
