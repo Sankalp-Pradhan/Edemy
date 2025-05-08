@@ -1,10 +1,11 @@
 import React from 'react'
+import { assets } from '../../assets/assets'
 
 const Footer = () => {
   return (
-    <div>
-      <h1>Edu Footer</h1>
-    </div>
+   <footer className='flex md:flex-row flex-col-reverse items-center justify-between'>
+
+   </footer>
   )
 }
 
