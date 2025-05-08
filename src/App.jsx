@@ -30,7 +30,7 @@ const App = () => {
         <Route path='/Player/:courseId' element={<Player />} />
         <Route path='/loading/:path' element={<Loading />} />
         <Route path='/educator' element={<Educator />}>
-          <Route path='educator' element={<Dashbaord />} />
+          <Route path='/educator' element={<Dashbaord />} />
           <Route path='add-course' element={<AddCourse />} />
           <Route path='my-course' element={<MyCourses />} />
           <Route path='Students-Enrolled' element={<StudentsEnrolled />} />
