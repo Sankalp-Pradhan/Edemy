@@ -1,9 +1,25 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
+import { useState } from 'react'
+import { Line } from 'rc-progress'
+import Footer from '../../components/student/Footer'
 
 const MyEnrollments = () => {
 
-  const { enrolledCourses ,calculateCourseDuration } = useContext(AppContext)
+  const { enrolledCourses, calculateCourseDuration, navigate } = useContext(AppContext)
+  const [progressArray, setProgressArray] = useState([
+    { lectureCompleted: 2, totalLectures: 4 },
+    { lectureCompleted: 3, totalLectures: 5 },
+    { lectureCompleted: 6, totalLectures: 7 },
+    { lectureCompleted: 4, totalLectures: 4 },
+    { lectureCompleted: 2, totalLectures: 5 },
+    { lectureCompleted: 2, totalLectures: 4 },
+    { lectureCompleted: 9, totalLectures: 12 },
+    { lectureCompleted: 2, totalLectures: 4 },
+    { lectureCompleted: 2, totalLectures: 4 },
+    { lectureCompleted: 3, totalLectures: 4 },
+    { lectureCompleted: 2, totalLectures: 4 },
+  ])
 
   return (
     <>
@@ -14,33 +30,40 @@ const MyEnrollments = () => {
             <tr>
               <th className='px-4 py-3 font-semibold truncate '>Course</th>
               <th className='px-4 py-3 font-semibold truncate '>Duration</th>
-              <th className='px-4 py-3 font-semibold truncate '>Completd</th>
+              <th className='px-4 py-3 font-semibold truncate '>Completed</th>
               <th className='px-4 py-3 font-semibold truncate '>Status</th>
             </tr>
           </thead>
           <tbody className='text-gray-700'>
-            {enrolledCourses.map((course  , index) => (
+            {enrolledCourses.map((course, index) => (
               <tr className='border-b border-gray-500/20 ' key={index}>
                 <td className='md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 '>
-                  <img src={course.courseThumbnail } alt="" className='w-14 sm:w-24 md:w-28' />
+                  <img src={course.courseThumbnail} alt="" className='w-14 sm:w-24 md:w-28' />
                   <div className='flex-1'>
                     <p className='mb-1 max-sm:text-sm'>{course.courseTitle}</p>
+                    <Line strokeWidth={2} percent={progressArray[index] ? (progressArray[index].lectureCompleted * 100) / (progressArray[index].totalLectures) : 0} className='bg-gray-300 rounded-full' />
                   </div>
                 </td>
                 <td className='px-4 py-3 max-sm:hidden'>
-              {calculateCourseDuration(course)}
+                  {calculateCourseDuration(course)}
                 </td>
                 <td className='px-4 py-3 max-sm:hidden'>
-                  4/10 <span>Lectures</span>
+                  {progressArray[index] && `${progressArray[index].lectureCompleted}/${progressArray[index].totalLectures}`}
+                  <span>Lectures</span>
                 </td>
                 <td className='px-4 py-3 max-sm:text-right'>
-                  <button className='px-3 sm:px-5 py-1.5 sm:py-2 bg-blue-600 max-sm:text-xs text-white '>On going</button>
+                  <button onClick={() => navigate('/player/' + course._id)}
+                    className='px-3 sm:px-5 py-1.5 sm:py-2 border-r-2 rounded-md  bg-blue-600 max-sm:text-xs text-white '>
+                    {progressArray[index] && progressArray[index].lectureCompleted / progressArray[index].totalLectures === 1 ? 'Completed' : 'On going'}
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <Footer />
+
     </>
   )
 }

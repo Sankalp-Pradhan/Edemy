@@ -15,7 +15,7 @@ const CourseSection = () => {
         {allCourses.slice(0, 4).map((course, index) => <CourseCard key={index} course={course} />)}
       </div>
 
-      <Link to={'/course-list'} onclick={() => scrollTo(0, 0)} className='text-gray-500 border border-gray-500/3 px-10 py-3 rounded '>Show all courses</Link>
+      <Link to={'/course-list'} onClick={() => scrollTo(0, 0)} className='text-gray-500 border border-gray-500/3 px-10 py-3 rounded '>Show all courses</Link>
     </div>
   )
 }
